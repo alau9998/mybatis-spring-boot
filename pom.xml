@@ -99,6 +99,56 @@
     </dependencies>
 
     <build>
+    	<!-- I got an error:
+    	Description	Resource	Path	Location	Type
+Plugin execution not covered by lifecycle configuration: org.apache.maven.plugins:maven-compiler-plugin:3.3:compile (execution: default-compile, phase: compile)	pom.xml	/mybatis-spring-boot	line 109	Maven Project Build Lifecycle Mapping Problem
+ 
+ 		see: https://stackoverflow.com/questions/6352208/how-to-solve-plugin-execution-not-covered-by-lifecycle-configuration-for-sprin
+ 		
+ 	XXXXXXXXXXXX WRONG ANSWERxxxxxxxxxxxxxxxxxxxx	
+
+In my case of a similar problem, instead of using Andrew's suggestion for the fix, it worked simply after I introduced <pluginManagement> tag to the pom.xml in question. Looks like that error is due to a missing <pluginManagement> tag. So, in order to avoid the exceptions in Eclipse, looks like one needs to simply enclose all the plugin tags inside a <pluginManagement> tag, like so:
+
+<build>
+    <pluginManagement>
+        <plugins>
+            <plugin> ... </plugin>
+            <plugin> ... </plugin>
+                  ....
+        </plugins>
+    </pluginManagement>
+</build>
+
+Once this structure is in place, the error goes away.
+ 		xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 		
+ 		above answer is wrong!!!! see: 
+ 			https://stackoverflow.com/questions/10483180/maven-what-is-pluginmanagement
+ 		
+ 		
+
+You still need to add
+
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+    </plugin>
+</plugins>
+
+in your build, because pluginManagement is only a way to share the same plugin configuration across all your project modules.
+
+From Maven documentation:
+
+    pluginManagement: is an element that is seen along side plugins. Plugin Management contains plugin elements in much the same way, except that rather than configuring plugin information for this particular project build, it is intended to configure project builds that inherit from this one. However, this only configures plugins that are actually referenced within the plugins element in the children. The children have every right to override pluginManagement definitions.
+
+ 		
+ 		
+ 		what is this about? https://www.eclipse.org/m2e/documentation/m2e-execution-not-covered.html
+ 		
+    	 -->
+    
+    
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -106,7 +156,15 @@
             </plugin>
 
             <!-- allows mixed groovy and java compilation with the need to have a stub generation phase-->
+            <!-- IMPORTANT: I got an error: Description	Resource	Path	Location	Type
+Plugin execution not covered by lifecycle configuration: org.apache.maven.plugins:maven-compiler-plugin:3.3:compile (execution: default-compile, phase: compile)	pom.xml	/mybatis-spring-boot	line 159	Maven Project Build Lifecycle Mapping Problem
+            
+            
+            	compare below with my SprigBootFromScratch project, I think it is missing <groupId> !!!!
+            	No, adding GroupId doesn't work...
+             -->
             <plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <!-- 2.8.0-01 and later require maven-compiler-plugin 3.1 or higher -->
                 <version>3.3</version>
@@ -117,25 +175,41 @@
                     <compilerArgs>
                         <arg>-Xlint</arg>
                     </compilerArgs>
+                    
+                    
+               	<!-- this is the cause of error, if i remove this compilerId tag, then eclipse
+               	won't show error, why?
+               	
+               	No, we don't need this at all! there is a file in this project that has
+               	  groovy language in it... just remove below
+               	 -->
+               	 <!-- 
                     <compilerId>groovy-eclipse-compiler</compilerId>
+                  -->
                     <!-- set verbose to be true if you want lots of uninteresting messages -->
                     <!--<verbose>true</verbose>-->
                 </configuration>
+                <!-- 
                 <dependencies>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-eclipse-compiler</artifactId>
                         <version>${groovy.eclipse.compiler.version}</version>
                     </dependency>
+                 -->
                     <!-- for 2.8.0-01 and later you must have an explicit dependency on groovy-eclipse-batch -->
+				<!-- 
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-eclipse-batch</artifactId>
                         <version>${groovy.eclipse.batch.version}</version>
+                   -->
                         <!-- or choose a different compiler version -->
                         <!-- <version>2.1.8-01</version> -->
+                 <!-- 
                     </dependency>
                 </dependencies>
+                 -->
             </plugin>
         </plugins>
     </build>
