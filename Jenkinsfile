@@ -12,5 +12,10 @@ pipeline {
         bat 'C:\\downloads\\Jenkins\\andrew_mvn_clean_jenkins_pipeline_mybats_springboot.bat'
       }
     }
+    stage('') {
+      steps {
+        bat 'C:\\downloads\\Jenkins\\andrew_mvn_build_install_jenkins_pipeline_mybats_springboot.bat'
+      }
+    }
   }
 }
