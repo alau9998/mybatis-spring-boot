@@ -9,7 +9,7 @@ pipeline {
     stage('Andrew maven build') {
       steps {
         echo 'Andrew calling mvn clean'
-        sh 'C:\\downloads\\apache-maven-3.5.4\\bin\\mvn clean'
+        bat 'C:\\downloads\\Jenkins\\andrew_mvn_clean_jenkins_pipeline_mybats_springboot.bat'
       }
     }
   }
