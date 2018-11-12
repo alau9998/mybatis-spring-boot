@@ -33,6 +33,7 @@ public class DemoTest {
 
   @Test
   public void findPublishers() {
+	  
     System.out.println( publisherMapper.getClass().getName());
     List<Publisher> publishers = publisherMapper.findAll();
     for (Publisher publisher : publishers) {
@@ -40,6 +41,7 @@ public class DemoTest {
       assertThat(publisher.getName(), is(not(nullValue())));
     }
     assertThat(publishers.size(), is(greaterThan(0)));
+    
   }
 
 
