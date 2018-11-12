@@ -1,5 +1,5 @@
 # MyBatis SpringBoot Demo Setup
-Describes how we built up the skeleton of this simple mybatis demo app  
+Andrew make changes here  Describes how we built up the skeleton of this simple mybatis demo app  
 
 If you have the Spring CLI installed 
 ```
