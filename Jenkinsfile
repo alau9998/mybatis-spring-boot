@@ -15,6 +15,7 @@ andrewTrigger = pipelineTriggers(triggers)
 echo('Andrew!!! pipelineTriggers is: ' + andrewTrigger )  // is this a method call??
 
 properties([andrewTrigger])
+properties([zzz])
 
 pipeline {
   agent any
