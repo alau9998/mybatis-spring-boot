@@ -39,7 +39,9 @@ pipeline {
       }
     }
     stage('Andrew maven build') {
-	//try to use docker to work around the jdk build bug (below
+      //try to use docker to work around the jdk build bug (below
+      // got error: https://stackoverflow.com/questions/47854463/got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket-at-uni
+      // fixed on my ubuntu box:   sudo usermod -a -G docker alau9998
       agent { docker 'maven:3-alpine' }
       steps {
         echo 'Andrew calling mvn clean'
