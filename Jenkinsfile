@@ -11,7 +11,10 @@ triggers << [
 			spec  : "00 05 * * *"
 ]
 echo('Andrew!!!! triggers is: ' + triggers)
-echo('Andrew!!! pipelineTriggers is: ' + pipelineTriggers(triggers) )  // is this a method call??
+andrewTrigger = pipelineTriggers(triggers)
+echo('Andrew!!! pipelineTriggers is: ' + andrewTrigger )  // is this a method call??
+
+properties([andrewTrigger])
 
 pipeline {
   agent any
@@ -21,6 +24,7 @@ pipeline {
         echo 'Hello Andrew Message'
         
         // https://wiki.jenkins.io/display/JENKINS/Pipeline+Maven+Plugin
+	      // this is equivalent to the withMaven(...) {....} syntax
         withMaven({ sh "mvn -v" })
       }
     }
