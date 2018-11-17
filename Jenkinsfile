@@ -30,6 +30,7 @@ properties([andrewTrigger])
 //andrewbuildtrigger = currentBuild.rawBuild?.getCause(hudson.triggers.TimerTrigger$TimerTriggerCause)?.getShortDescription() ?: "Unknown"
 // andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { echo "andrew build cause ${it}" } )
 // above is same as below
+// BELOW method is rejected, it says i am not administrator??
 andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { it -> echo "andrew build cause ${it}" } )
 //echo('andrew get trigger description: ' + andrewbuildtrigger)
 
