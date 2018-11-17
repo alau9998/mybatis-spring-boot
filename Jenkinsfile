@@ -25,6 +25,14 @@ echo('Andrew!!! pipelineTriggers is: ' + andrewTrigger )  // is this a method ca
 properties([andrewTrigger])
 //properties([zzz])
 
+// https://qa.nuxeo.org/jenkins/pipeline-syntax/globals
+// https://javadoc.jenkins-ci.org/index.html?hudson/model/Run.html
+//andrewbuildtrigger = currentBuild.rawBuild?.getCause(hudson.triggers.TimerTrigger$TimerTriggerCause)?.getShortDescription() ?: "Unknown"
+// andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { echo "andrew build cause ${it}" } )
+// above is same as below
+andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { it -> echo "andrew build cause ${it}" } )
+//echo('andrew get trigger description: ' + andrewbuildtrigger)
+
 pipeline {
   agent any
   stages {
