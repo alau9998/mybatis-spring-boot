@@ -8,14 +8,15 @@ echo('Andrew!!!!  branchName: ' + branchName)
 def triggers = []
 triggers << [
 			$class: 'hudson.triggers.TimerTrigger',
-			spec  : "00 05 * * *"
+			//spec  : "00 05 * * *"
+			spec: "*/3 * * * *" //every 3 minute ??
 ]
 echo('Andrew!!!! triggers is: ' + triggers)
 andrewTrigger = pipelineTriggers(triggers)
 echo('Andrew!!! pipelineTriggers is: ' + andrewTrigger )  // is this a method call??
 
 properties([andrewTrigger])
-properties([zzz])
+//properties([zzz])
 
 pipeline {
   agent any
