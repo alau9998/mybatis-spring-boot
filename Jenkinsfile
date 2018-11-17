@@ -10,7 +10,7 @@ triggers << [
 			$class: 'hudson.triggers.TimerTrigger',
 			spec  : "00 05 * * *"
 ]
-pipelineTriggers(triggers)  // is this a method call??
+echo('Andrew!!! pipelineTriggers is: ' + pipelineTriggers(triggers) )  // is this a method call??
 
 pipeline {
   agent any
