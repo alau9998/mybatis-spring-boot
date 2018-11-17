@@ -50,9 +50,10 @@ Try unsetting your object var or wrapping it in a method so its scope isn't node
 */
 @NonCPS
 def andrewPrintTriggerCause() {
-  andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { it -> echo "andrew build cause ${it}" } )
+  //andrewbuildtrigger = 
+  currentBuild.rawBuild?.getCauses()?.each( { it -> echo "andrew build cause ${it}" } )
 }
-andrewPrintTriggerCause()
+//andrewPrintTriggerCause()
 
 //echo('andrew get trigger description: ' + andrewbuildtrigger)
 echo('Andrew build started!!!!!')
@@ -63,6 +64,8 @@ pipeline {
     stage('Andrew Start Initializeing') {
       steps {
         echo 'Hello Andrew Message'
+	      
+        andrewPrintTriggerCause()
         
         // https://wiki.jenkins.io/display/JENKINS/Pipeline+Maven+Plugin
 	      // this is equivalent to the withMaven(...) {....} syntax
