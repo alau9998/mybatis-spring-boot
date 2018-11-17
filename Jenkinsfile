@@ -31,7 +31,29 @@ properties([andrewTrigger])
 // andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { echo "andrew build cause ${it}" } )
 // above is same as below
 // BELOW method is rejected, it says i am not administrator??
-andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { it -> echo "andrew build cause ${it}" } )
+// below got an exception: Caused: java.io.NotSerializableException: hudson.model.Cause$UserIdCause
+//see   https://stackoverflow.com/questions/37864542/jenkins-pipeline-notserializableexception-groovy-json-internal-lazymap
+/*
+I ran into this myself today and through some bruteforce I've figured out both how to resolve it and potentially why.
+
+Probably best to start with the why:
+
+Jenkins has a paradigm where all jobs can be interrupted, paused and resumable through server reboots. To achieve this the pipeline and its data must be fully serializable - IE it needs to be able to save the state of everything. Similarly, it needs to be able to serialize the state of global variables between nodes and sub-jobs in the build, which is what I think is happening for you and I and why it only occurs if you add that additional build step.
+
+For whatever reason JSONObject's aren't serializable by default. I'm not a Java dev so I cannot say much more on the topic sadly. There are plenty of answers out there about how one may fix this properly though I do not know how applicable they are to Groovy and Jenkins. See this post for a little more info.
+
+How you fix it:
+
+If you know how, you can possibly make the JSONObject serializable somehow. Otherwise you can resolve it by ensuring no global variables are of that type.
+
+Try unsetting your object var or wrapping it in a method so its scope isn't node global.
+*/
+@NonCPS
+def andrewPrintTriggerCause() {
+  andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { it -> echo "andrew build cause ${it}" } )
+}
+andrewPrintTriggerCause()
+
 //echo('andrew get trigger description: ' + andrewbuildtrigger)
 echo('Andrew build started!!!!!')
 
