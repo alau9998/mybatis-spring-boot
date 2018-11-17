@@ -1,3 +1,17 @@
+branchName = ''
+
+branchName = env.BRANCH_NAME
+echo('Andrew!!!!  branchName: ' + branchName)
+
+//see: https://jenkins.io/doc/pipeline/steps/workflow-multibranch/#-properties-%20set%20job%20properties
+
+def triggers = []
+triggers << [
+			$class: 'hudson.triggers.TimerTrigger',
+			spec  : "00 05 * * *"
+]
+pipelineTriggers(triggers)  // is this a method call??
+
 pipeline {
   agent any
   stages {
