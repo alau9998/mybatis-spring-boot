@@ -41,7 +41,15 @@ pipeline {
     stage('Andrew maven build') {
       //try to use docker to work around the jdk build bug (below
       // got error: https://stackoverflow.com/questions/47854463/got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket-at-uni
-      // fixed on my ubuntu box:   sudo usermod -a -G docker alau9998
+      // fixed: on my ubuntu box:   sudo usermod -a -G docker alau9998
+      //no, just tried typing the failed command on my linux box while signin as alau9998:
+      // still got permission error:  docker inspect -f . maven:3-alpine
+      //   need to restart Jenkins ??
+      // no, after i run this command   sudo usermod -a -G docker alau9998
+      // then type:  groups             still don't see alau9998 added to docker group why??
+      // no, type:   id alau9998             and it shows i am in that group
+      // still not work
+
       agent { docker 'maven:3-alpine' }
       steps {
         echo 'Andrew calling mvn clean'
