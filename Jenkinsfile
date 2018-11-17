@@ -4,17 +4,21 @@ pipeline {
     stage('Andrew Start Initializeing') {
       steps {
         echo 'Hello Andrew Message'
+        
+        // https://wiki.jenkins.io/display/JENKINS/Pipeline+Maven+Plugin
+        withMaven({ sh "mvn -v" })
       }
     }
     stage('Andrew maven build') {
       steps {
         echo 'Andrew calling mvn clean'
-        bat 'C:\\downloads\\Jenkins\\andrew_mvn_clean_jenkins_pipeline_mybats_springboot.bat'
+        //bat 'C:\\downloads\\Jenkins\\andrew_mvn_clean_jenkins_pipeline_mybats_springboot.bat'
       }
     }
-    stage('') {
+    stage('Andrew Last stage') {
       steps {
-        bat 'C:\\downloads\\Jenkins\\andrew_mvn_build_install_jenkins_pipeline_mybats_springboot.bat'
+        echo 'Andrew Last Stage'
+        // bat 'C:\\downloads\\Jenkins\\andrew_mvn_build_install_jenkins_pipeline_mybats_springboot.bat'
       }
     }
   }
