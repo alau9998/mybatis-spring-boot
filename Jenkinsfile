@@ -1,3 +1,10 @@
+//node {   //this part maybe implied ...  https://jenkins.io/doc/book/pipeline/jenkinsfile/
+//	checkout scm
+
+//The checkout step will checkout code from source control;
+//scm is a special variable which instructs the checkout step to clone the specific revision which triggered this Pipeline 
+
+
 branchName = ''
 
 branchName = env.BRANCH_NAME
@@ -35,6 +42,7 @@ pipeline {
       steps {
         echo 'Andrew calling mvn clean'
         //bat 'C:\\downloads\\Jenkins\\andrew_mvn_clean_jenkins_pipeline_mybats_springboot.bat'
+	withMaven() { sh "mvn clean test" }
       }
     }
     stage('Andrew Last stage') {
