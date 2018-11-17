@@ -4,6 +4,7 @@
 //The checkout step will checkout code from source control;
 //scm is a special variable which instructs the checkout step to clone the specific revision which triggered this Pipeline 
 
+sh 'cat /etc/*-release'
 
 branchName = ''
 
@@ -74,6 +75,7 @@ Set useSystemClassloader to false:
 </plugin>
 If you're not inheriting from a parent which has version defined for you (such as the spring boot starter) you'll need to define that as well.
 	*/
+        sh 'cat /etc/*-release'
 	withMaven() { sh "mvn clean test" }
       }
     }
