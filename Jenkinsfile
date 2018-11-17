@@ -33,6 +33,7 @@ properties([andrewTrigger])
 // BELOW method is rejected, it says i am not administrator??
 andrewbuildtrigger = currentBuild.rawBuild?.getCauses()?.each( { it -> echo "andrew build cause ${it}" } )
 //echo('andrew get trigger description: ' + andrewbuildtrigger)
+echo('Andrew build started!!!!!')
 
 pipeline {
   agent any
