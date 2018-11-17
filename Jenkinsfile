@@ -49,6 +49,7 @@ pipeline {
       // then type:  groups             still don't see alau9998 added to docker group why??
       // no, type:   id alau9998             and it shows i am in that group
       // still not work
+      // reboot Ubuntu box and it works!
 
       agent { docker 'maven:3-alpine' }
       steps {
