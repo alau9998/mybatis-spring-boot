@@ -241,6 +241,12 @@ Plugin execution not covered by lifecycle configuration: org.apache.maven.plugin
             			<include>Sample.java</include>
           			</includes>
         		</configuration>
+        		
+        		below is copied from company's pom
+        		<configuration>
+                    <skipTests>${skipUTs}</skipTests>
+                    <argLine>${test.plugin.args}</argLine>
+                </configuration>
         		 -->
         		<dependencies>
         			<!--  adding below fixed the maven test  problem -->
@@ -250,11 +256,133 @@ Plugin execution not covered by lifecycle configuration: org.apache.maven.plugin
     					<version>3.8.1</version>
 					</dependency>
         		 </dependencies>
-     		</plugin>             
+     		</plugin>  
+     		
+     		<!--  i got below from company project pom.xml file -->
+     		
+     		<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/tidy-maven-plugin -->
+			<plugin>
+    			<groupId>org.codehaus.mojo</groupId>
+    			<artifactId>tidy-maven-plugin</artifactId>
+    			<version>1.1.0</version>
+			</plugin>
+     		           
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <!--
+                <configuration> 
+                    <skipITs>${skipITs}</skipITs>
+                    <testClassesDirectory>${project.build.directory}/test-classes</testClassesDirectory>
+                    <argLine>${test.plugin.args}</argLine>
+                    <excludedGroups>${excludedIntegrationTestTags}</excludedGroups>
+                </configuration>
+                -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
              
         </plugins>
     </build>
-
+    
+    <!--  below is from company's pom file -->
+    <reporting>
+        <plugins>
+            <plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-changelog-plugin</artifactId>
+    			<version>2.3</version>
+            </plugin>
+        </plugins>
+    </reporting>
+    
+    
+	<!--  below is from company's pom file -->
+    <profiles>
+    	<!-- 
+        <profile>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <id>cardinal-default</id>
+            <properties>
+                <spring.active.profile>default</spring.active.profile>
+                <datasource.url>jdbc:oracle:thin:@localhost:1521:xe</datasource.url>
+                <datasource.username>CARDINAL</datasource.username>
+                <datasource.password>passw0rd1</datasource.password>
+                <datasource.driver-class-name>oracle.jdbc.driver.OracleDriver
+                </datasource.driver-class-name>
+            </properties>
+        </profile>
+        <profile>
+            <id>cardinal-dev</id>
+            <properties>
+                <spring.active.profile>dev</spring.active.profile>
+                <datasource.url>jdbc:oracle:thin:@10.10.3.58:1521:xe</datasource.url>
+                <datasource.username>CARDINAL</datasource.username>
+                <datasource.password>passw0rd1</datasource.password>
+                <datasource.driver-class-name>oracle.jdbc.driver.OracleDriver
+                </datasource.driver-class-name>
+            </properties>
+        </profile>
+         -->
+        <profile>
+            <!-- profile for static code analysis tools -->
+            <id>analysis</id>
+            <properties>
+                <test.plugin.args>${argLine} -Xmx1024m</test.plugin.args>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <version>3.0.5</version>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                            <xmlOutput>true</xmlOutput>
+                            <omitVisitors>FindReturnRef</omitVisitors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.2</version>
+                        <executions>
+                            <execution>
+                                <id>jacoco-prepare</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>jacoco-report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <phase>post-integration-test</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>    
+    
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
